@@ -1,5 +1,5 @@
 const endpoint = {
-  HOTEL: "/hotels",
+  PRODUCTS: "/products",
 };
 
 export default endpoint;
