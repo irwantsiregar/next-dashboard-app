@@ -1,3 +1,3 @@
-import Category from "./Products";
+import Products from "./Products";
 
-export default Category;
+export default Products;

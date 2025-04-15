@@ -1,19 +1,18 @@
 import useChangeUrl from "@/hooks/useChangeUrl";
-import productsServices from "@/services/products.service";
+import cartsServices from "@/services/carts.service";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const useProducts = () => {
+const useCarts = () => {
   const router = useRouter();
 
   const [selectedId, setSelectedId] = useState<string>("");
 
   const { currentLimit, currentPage, currentSearch } = useChangeUrl();
 
-  const getProducts = async () => {
+  const getCarts = async () => {
     let params = `limit=${currentLimit}`;
-    // let params = `limit=${currentLimit}&skip=${Number(currentPage) * Number(currentLimit)}`;
 
     if (Number(currentPage) > 1) {
       params += `&skip=${(Number(currentPage) - 1) * Number(currentLimit)}`;
@@ -23,34 +22,31 @@ const useProducts = () => {
       params += `&q=${currentSearch}`;
     }
 
-    const res = await productsServices.getProducts(
-      params,
-      currentSearch !== "",
-    );
+    const res = await cartsServices.getCarts(params);
     const { data } = res;
 
     return data;
   };
 
   const {
-    data: dataProducts,
-    isLoading: isLoadingProducts,
-    isRefetching: isRefetchingProducts,
-    refetch: refetchProducts,
+    data: dataCarts,
+    isLoading: isLoadingCarts,
+    isRefetching: isRefetchingCarts,
+    refetch: refetchCarts,
   } = useQuery({
-    queryKey: ["Products", currentPage, currentLimit, currentSearch],
-    queryFn: () => getProducts(),
+    queryKey: ["Carts", currentPage, currentLimit, currentSearch],
+    queryFn: () => getCarts(),
     enabled: router.isReady && !!currentPage && !!currentLimit,
   });
 
   return {
-    dataProducts,
-    isLoadingProducts,
-    isRefetchingProducts,
-    refetchProducts,
+    dataCarts,
+    isLoadingCarts,
+    isRefetchingCarts,
+    refetchCarts,
     selectedId,
     setSelectedId,
   };
 };
 
-export default useProducts;
+export default useCarts;

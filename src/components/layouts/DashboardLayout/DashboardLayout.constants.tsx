@@ -1,9 +1,4 @@
-import {
-  CiGrid41,
-  CiShop,
-  CiShoppingCart,
-  CiShoppingTag,
-} from "react-icons/ci";
+import { CiFries, CiGrid41, CiShop, CiShoppingCart } from "react-icons/ci";
 
 const SIDEBAR_ADMIN = [
   {
@@ -19,16 +14,16 @@ const SIDEBAR_ADMIN = [
     icon: <CiShop />,
   },
   {
-    key: "category",
-    label: "Category",
-    href: "/category",
-    icon: <CiShoppingTag />,
-  },
-  {
     key: "carts",
     label: "Carts",
     href: "/carts",
     icon: <CiShoppingCart />,
+  },
+  {
+    key: "recipes",
+    label: "Recipes",
+    href: "/recipes",
+    icon: <CiFries />,
   },
 ];
 

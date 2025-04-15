@@ -12,8 +12,7 @@ const useChangeUrl = () => {
   const debounce = useDebounce();
 
   const currentLimit = router.query.limit;
-  const currentPage =
-    Number(router.query.page) <= 1 ? 0 : Number(router.query.page) * 10;
+  const currentPage = router.query.page;
   const currentSearch = router.query.search;
 
   const setURL = () => {

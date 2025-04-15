@@ -53,18 +53,27 @@ const DataTable = (props: PropTypes) => {
 
   const TopContent = useMemo(() => {
     return (
-      <div className="flex flex-row-reverse items-center justify-between gap-y-4 lg:flex-row lg:items-center">
+      <div
+        className={cn(
+          "flex flex-col items-center gap-4 lg:flex-row lg:items-center",
+          !buttonTopContentLabel ? "justify-end" : "justify-between",
+        )}
+      >
         <Input
           isClearable
-          className="w-full sm:max-w-[24%]"
-          placeholder="Search by name"
+          className="w-full lg:max-w-[24%]"
+          placeholder="Search by title"
           startContent={<CiSearch />}
           onChange={handleSearch}
           onClear={handleClearSearch}
         />
 
         {buttonTopContentLabel && (
-          <Button color="danger" onPress={onClickButtonTopContent}>
+          <Button
+            className="min-w-full lg:min-w-min font-semibold"
+            color="danger"
+            onPress={onClickButtonTopContent}
+          >
             {buttonTopContentLabel}
           </Button>
         )}

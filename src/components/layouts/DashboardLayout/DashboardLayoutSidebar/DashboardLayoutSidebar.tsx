@@ -39,7 +39,7 @@ function DashboardLayoutSidebar(props: PropTypes) {
             alt="logo"
             width={180}
             height={60}
-            className="mb-6 w-32 bg-slate-200 p-1 rounded-lg"
+            className="mb-6 w-32 bg-slate-500 p-2 rounded-lg"
             onClick={() => router.push("/")}
           />
         </div>

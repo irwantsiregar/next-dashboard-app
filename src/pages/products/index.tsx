@@ -1,7 +1,7 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import Products from "@/components/views/Products";
 
-function ProductsAdminPage() {
+function ProductsPage() {
   return (
     <DashboardLayout
       title="Products"
@@ -13,4 +13,4 @@ function ProductsAdminPage() {
   );
 }
 
-export default ProductsAdminPage;
+export default ProductsPage;

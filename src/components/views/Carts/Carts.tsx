@@ -1,30 +1,31 @@
 import DataTable from "@/components/ui/DataTable";
+import useChangeUrl from "@/hooks/useChangeUrl";
+import { totalPages } from "@/utils/totalPages";
 import { useDisclosure } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Key, ReactNode, useCallback, useEffect } from "react";
-import { COLUMN_LISTS_PRODUCTS } from "./Products.constants";
-import useProducts from "./useProducts";
-import useChangeUrl from "@/hooks/useChangeUrl";
-import ButtonsAction from "@/components/commons/ButtonsAction/ButtonsAction";
-import { totalPages } from "@/utils/totalPages";
+import { COLUMN_LISTS_CARTS } from "./Carts.constants";
+import useCarts from "./useCarts";
+import { formatToDollar } from "@/utils/formatToDollar";
+import DropdownAction from "@/components/commons/DropdownAction";
 
-const Products = () => {
+const Carts = () => {
   const { push, isReady, query } = useRouter();
 
   const {
-    dataProducts,
+    dataCarts,
 
-    isLoadingProducts,
-    isRefetchingProducts,
+    isLoadingCarts,
+    isRefetchingCarts,
 
-    refetchProducts,
+    refetchCarts,
     selectedId,
     setSelectedId,
-  } = useProducts();
+  } = useCarts();
 
-  const addProductsModal = useDisclosure();
-  const deleteProductsModal = useDisclosure();
+  const addCartsModal = useDisclosure();
+  const deleteCartsModal = useDisclosure();
 
   const { setURL } = useChangeUrl();
 
@@ -33,8 +34,8 @@ const Products = () => {
   }, [isReady]);
 
   const renderCell = useCallback(
-    (product: Record<string, unknown>, columKey: Key) => {
-      const cellValue = product[columKey as keyof typeof product];
+    (cart: Record<string, unknown>, columKey: Key) => {
+      const cellValue = cart[columKey as keyof typeof cart];
 
       const isURL = Array.isArray(cellValue) && cellValue[0].includes("http");
 
@@ -51,17 +52,24 @@ const Products = () => {
           );
         case "actions":
           return (
-            <ButtonsAction
+            <DropdownAction
               onPressButtonDetail={() => {}}
               onPressButtonUpdate={() => {
-                setSelectedId(`${product?.id}`);
+                setSelectedId(`${cart?.id}`);
               }}
               onPressButtonDelete={() => {
-                setSelectedId(`${product?.id}`);
+                setSelectedId(`${cart?.id}`);
               }}
             />
           );
         default:
+          if (
+            ["total", "totalQuantity", "discountedTotal"].includes(
+              columKey as string,
+            )
+          ) {
+            return formatToDollar(cellValue as number);
+          }
           return cellValue as ReactNode;
       }
     },
@@ -72,18 +80,17 @@ const Products = () => {
     <section>
       {Object.keys(query).length > 0 && (
         <DataTable
-          buttonTopContentLabel="Create Product"
-          columns={COLUMN_LISTS_PRODUCTS}
-          data={dataProducts?.products || []}
-          emptyContent="Product is empty"
-          isLoading={isLoadingProducts || isRefetchingProducts}
-          onClickButtonTopContent={addProductsModal.onOpen}
+          columns={COLUMN_LISTS_CARTS}
+          data={dataCarts?.carts || []}
+          emptyContent="Carts is empty"
+          isLoading={isLoadingCarts || isRefetchingCarts}
+          onClickButtonTopContent={addCartsModal.onOpen}
           renderCell={renderCell}
-          totalPages={totalPages(dataProducts?.total)}
+          totalPages={totalPages(dataCarts?.total)}
         />
       )}
     </section>
   );
 };
 
-export default Products;
+export default Carts;
