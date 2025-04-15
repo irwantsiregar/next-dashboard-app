@@ -1,13 +1,13 @@
+import ButtonsAction from "@/components/commons/ButtonsAction/ButtonsAction";
 import DataTable from "@/components/ui/DataTable";
+import useChangeUrl from "@/hooks/useChangeUrl";
+import { totalPages } from "@/utils/totalPages";
 import { useDisclosure } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Key, ReactNode, useCallback, useEffect } from "react";
 import { COLUMN_LISTS_PRODUCTS } from "./Products.constants";
 import useProducts from "./useProducts";
-import useChangeUrl from "@/hooks/useChangeUrl";
-import ButtonsAction from "@/components/commons/ButtonsAction/ButtonsAction";
-import { totalPages } from "@/utils/totalPages";
 
 const Products = () => {
   const { push, isReady, query } = useRouter();

@@ -4,12 +4,22 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   images: {
+    domains: ["cdn.dummyjson.com"],
     remotePatterns: [
       {
-        hostname: "cdn.dummyjson.com",
+        hostname: "**",
         protocol: "https",
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/dashboard",
+        permanent: true,
+      },
+    ];
   },
 };
 

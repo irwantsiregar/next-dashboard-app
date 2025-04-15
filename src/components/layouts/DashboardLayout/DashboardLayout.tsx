@@ -1,8 +1,9 @@
 import PageHead from "@/components/commons/PageHead";
+import TopBar from "@/components/commons/TopBar";
 import { Navbar, NavbarMenuToggle } from "@heroui/react";
 import { Fragment, ReactNode, useState } from "react";
 import { SIDEBAR_ADMIN } from "./DashboardLayout.constants";
-import DashboardLayoutSidebar from "./DashboardLayoutSidebar/DashboardLayoutSidebar";
+import DashboardLayoutSidebar from "./DashboardLayoutSidebar";
 
 interface PropTypes {
   children: ReactNode;
@@ -26,25 +27,29 @@ const DashboardLayout = (props: PropTypes) => {
           isOpen={open}
         />
 
-        <div className="h-screen w-full overflow-auto p-8">
-          <Navbar
-            className="flex justify-between bg-transparent px-0"
-            isBlurred={false}
-            classNames={{ wrapper: "p-0" }}
-            position="static"
-          >
-            <h1 className="text-3xl font-bold">{title}</h1>
+        <div className="h-screen w-full overflow-auto">
+          <TopBar />
 
-            <NavbarMenuToggle
-              className="lg:hidden"
-              aria-label={open ? "Close menu" : "Open menu"}
-              onPress={() => setOpen(!open)}
-            />
-          </Navbar>
+          <div className="relative px-6 py-2">
+            <Navbar
+              className="flex justify-between bg-transparent px-0"
+              isBlurred={false}
+              classNames={{ wrapper: "p-0" }}
+              position="static"
+            >
+              <h1 className="text-3xl font-bold">{title}</h1>
 
-          <p className="mb-4 text-small">{description}</p>
+              <NavbarMenuToggle
+                className="lg:hidden"
+                aria-label={open ? "Close menu" : "Open menu"}
+                onPress={() => setOpen(!open)}
+              />
+            </Navbar>
 
-          {children}
+            <p className="mb-4 text-small">{description}</p>
+
+            {children}
+          </div>
         </div>
       </div>
     </Fragment>

@@ -4,7 +4,7 @@ const SIDEBAR_ADMIN = [
   {
     key: "dashboard",
     label: "Dashboard",
-    href: "/admin/dashboard",
+    href: "/dashboard",
     icon: <CiGrid41 />,
   },
   {
