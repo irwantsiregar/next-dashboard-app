@@ -3,6 +3,7 @@ const endpoint = {
   SEARCH: "/search",
   CARTS: "/carts",
   RECIPES: "/recipes",
+  POSTS: "/posts",
 };
 
 export default endpoint;

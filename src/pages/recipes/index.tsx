@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import Carts from "@/components/views/Carts";
+import Carts from "@/components/views/Recipes";
 
 function RecipesPage() {
   return (

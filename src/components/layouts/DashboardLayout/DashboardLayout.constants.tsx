@@ -1,4 +1,10 @@
-import { CiFries, CiGrid41, CiShop, CiShoppingCart } from "react-icons/ci";
+import {
+  CiFries,
+  CiGrid41,
+  CiShop,
+  CiShoppingCart,
+  CiViewList,
+} from "react-icons/ci";
 
 const SIDEBAR_ADMIN = [
   {
@@ -24,6 +30,12 @@ const SIDEBAR_ADMIN = [
     label: "Recipes",
     href: "/recipes",
     icon: <CiFries />,
+  },
+  {
+    key: "posts",
+    label: "Posts",
+    href: "/posts",
+    icon: <CiViewList />,
   },
 ];
 

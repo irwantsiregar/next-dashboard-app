@@ -37,19 +37,7 @@ const Carts = () => {
     (cart: Record<string, unknown>, columKey: Key) => {
       const cellValue = cart[columKey as keyof typeof cart];
 
-      const isURL = Array.isArray(cellValue) && cellValue[0].includes("http");
-
       switch (columKey) {
-        case "images":
-          return (
-            <Image
-              src={isURL ? cellValue[0] : ""}
-              alt="Image"
-              width={100}
-              height={100}
-              loading="lazy"
-            />
-          );
         case "actions":
           return (
             <DropdownAction
@@ -63,11 +51,7 @@ const Carts = () => {
             />
           );
         default:
-          if (
-            ["total", "totalQuantity", "discountedTotal"].includes(
-              columKey as string,
-            )
-          ) {
+          if (["total", "discountedTotal"].includes(columKey as string)) {
             return formatToDollar(cellValue as number);
           }
           return cellValue as ReactNode;

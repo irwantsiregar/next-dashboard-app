@@ -7,6 +7,7 @@ import {
   Pagination,
   Select,
   SelectItem,
+  SortDescriptor,
   Spinner,
   Table,
   TableBody,
@@ -15,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/react";
-import { Key, ReactNode, useMemo } from "react";
+import { Key, ReactNode, useMemo, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
 type PropTypes = {
@@ -23,10 +24,15 @@ type PropTypes = {
   columns: Record<string, unknown>[];
   data: Record<string, unknown>[];
   emptyContent: string;
+  hideTopContent?: boolean;
+  hideBottomContent?: boolean;
   isLoading?: boolean;
+  onSortChange?: (descriptor: SortDescriptor) => void;
   onClickButtonTopContent?: () => void;
   renderCell: (item: Record<string, unknown>, columKey: Key) => ReactNode;
   totalPages: number;
+  thTransparent?: boolean;
+  placeholderSearch?: string;
 };
 
 const DataTable = (props: PropTypes) => {
@@ -36,9 +42,14 @@ const DataTable = (props: PropTypes) => {
     data,
     emptyContent,
     isLoading,
+    hideTopContent,
+    hideBottomContent,
+    onSortChange,
     onClickButtonTopContent,
     renderCell,
     totalPages,
+    thTransparent,
+    placeholderSearch = "Search..",
   } = props;
 
   const {
@@ -51,6 +62,11 @@ const DataTable = (props: PropTypes) => {
     handleClearSearch,
   } = useChangeUrl();
 
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: "title",
+    direction: "ascending",
+  });
+
   const TopContent = useMemo(() => {
     return (
       <div
@@ -62,7 +78,7 @@ const DataTable = (props: PropTypes) => {
         <Input
           isClearable
           className="w-full lg:max-w-[24%]"
-          placeholder="Search by title"
+          placeholder={placeholderSearch}
           startContent={<CiSearch />}
           onChange={handleSearch}
           onClear={handleClearSearch}
@@ -70,7 +86,7 @@ const DataTable = (props: PropTypes) => {
 
         {buttonTopContentLabel && (
           <Button
-            className="min-w-full lg:min-w-min font-semibold"
+            className="min-w-full font-semibold lg:min-w-min"
             color="danger"
             onPress={onClickButtonTopContent}
           >
@@ -121,20 +137,47 @@ const DataTable = (props: PropTypes) => {
     handleChangePage,
   ]);
 
+  const classRow = {
+    th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
+    td: [
+      "group-data-[first=true]/tr:first:before:rounded-none",
+      "group-data-[first=true]/tr:last:before:rounded-none",
+      "group-data-[middle=true]/tr:before:rounded-none",
+      "group-data-[last=true]/tr:first:before:rounded-none",
+      "group-data-[last=true]/tr:last:before:rounded-none",
+    ],
+  };
+
   return (
     <Table
-      bottomContent={BottomContent}
+      // isCompact
+      aria-label="table-features"
+      bottomContent={!hideBottomContent && BottomContent}
       bottomContentPlacement="outside"
       classNames={{
         base: "max-w-full",
         wrapper: cn({ "overflow-x-hidden": isLoading }),
+        th: thTransparent ? classRow.th : "",
+        td: thTransparent ? "" : classRow.td,
       }}
-      topContent={TopContent}
+      topContent={!hideTopContent && TopContent}
       topContentPlacement="outside"
+      onSortChange={(descriptor) => {
+        if (onSortChange) {
+          onSortChange(descriptor);
+
+          setSortDescriptor(descriptor);
+        }
+      }}
+      sortDescriptor={sortDescriptor}
     >
       <TableHeader columns={columns}>
         {(column) => (
-          <TableColumn key={column.uid as Key}>
+          <TableColumn
+            key={column.uid as Key}
+            align={column.uid === "actions" ? "center" : "start"}
+            allowsSorting={!!column.sortable}
+          >
             {column.name as string}
           </TableColumn>
         )}

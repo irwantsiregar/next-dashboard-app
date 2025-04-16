@@ -12,7 +12,7 @@ interface PropTypes {
 }
 
 const AppShell = ({ children }: PropTypes) => {
-  return <main className={cn(inter.className)}>{children}</main>;
+  return <main className={cn(inter.className,)}>{children}</main>;
 };
 
 export default AppShell;

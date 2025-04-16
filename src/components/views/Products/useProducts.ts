@@ -9,7 +9,13 @@ const useProducts = () => {
 
   const [selectedId, setSelectedId] = useState<string>("");
 
-  const { currentLimit, currentPage, currentSearch } = useChangeUrl();
+  const {
+    currentLimit,
+    currentPage,
+    currentSearch,
+    currentSortBy,
+    currentOrder,
+  } = useChangeUrl();
 
   const getProducts = async () => {
     let params = `limit=${currentLimit}`;
@@ -21,6 +27,9 @@ const useProducts = () => {
 
     if (currentSearch) {
       params += `&q=${currentSearch}`;
+    }
+    if (!(!currentSortBy && !currentOrder)) {
+      params += `&sortBy=${currentSortBy}&order=${currentOrder}`;
     }
 
     const res = await productsServices.getProducts(
@@ -38,7 +47,14 @@ const useProducts = () => {
     isRefetching: isRefetchingProducts,
     refetch: refetchProducts,
   } = useQuery({
-    queryKey: ["Products", currentPage, currentLimit, currentSearch],
+    queryKey: [
+      "Products",
+      currentPage,
+      currentLimit,
+      currentSearch,
+      currentSortBy,
+      currentOrder,
+    ],
     queryFn: () => getProducts(),
     enabled: router.isReady && !!currentPage && !!currentLimit,
   });
