@@ -6,7 +6,7 @@ import { Button, Card, CardBody, CardHeader, Chip } from "@heroui/react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { BsBookmarkCheck } from "react-icons/bs";
-import { CiBurger, CiPizza, CiShoppingCart } from "react-icons/ci";
+import { CiBurger, CiMenuKebab, CiShoppingCart } from "react-icons/ci";
 import { FiChevronUp } from "react-icons/fi";
 import { MdCreditScore } from "react-icons/md";
 import usePosts from "../../Posts/usePosts";
@@ -191,7 +191,7 @@ const SectionCards = () => {
                   size="sm"
                   variant="light"
                 >
-                  <CiPizza />
+                  <CiMenuKebab />
                 </Button>
               </div>
             </CardHeader>
