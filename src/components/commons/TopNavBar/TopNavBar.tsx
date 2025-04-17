@@ -7,57 +7,21 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   Navbar,
-  NavbarBrand,
   NavbarContent,
-  NavbarItem,
 } from "@heroui/react";
+import { ReactNode } from "react";
 import { BsBell, BsCart3 } from "react-icons/bs";
 
-export const AcmeLogo = () => {
-  return (
-    <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
-      <path
-        clipRule="evenodd"
-        d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-        fill="currentColor"
-        fillRule="evenodd"
-      />
-    </svg>
-  );
-};
-
-export default function TopBar() {
+export default function TopNavBar({ children }: { children: ReactNode }) {
   return (
     <Navbar
       isBlurred
-      maxWidth="2xl"
+      maxWidth="full"
       position="static"
-      className="border-b-1 border-default-200"
+      className="border-b-1 border-default-200 pr-2"
     >
-      <NavbarBrand>
-        <AcmeLogo />
-        <p className="font-bold text-inherit">ACME</p>
-      </NavbarBrand>
-
-      <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link aria-current="page" color="secondary" href="#">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
+      {children}
 
       <NavbarContent as="div" justify="end">
         <div className="flex items-center justify-center gap-x-3 pr-2">

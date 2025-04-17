@@ -29,7 +29,12 @@ const Products = () => {
       <div className="flex w-full items-center justify-between pb-2 lg:pb-3">
         <h4 className="text-xl font-semibold">Products</h4>
 
-        <Button size="sm" variant="light" className="text-sm text-default-600">
+        <Button
+          size="sm"
+          variant="light"
+          className="border-1 border-default-200 text-sm text-default-600"
+          onPress={() => push("/products")}
+        >
           View All
         </Button>
       </div>

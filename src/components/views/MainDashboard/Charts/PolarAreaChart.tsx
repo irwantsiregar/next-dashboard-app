@@ -1,18 +1,25 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import { TSeries } from "@/types/Charts";
+import { Skeleton } from "@heroui/react";
 const ApexChart = dynamic(() => import("@/components/ui/Charts/ApexChart"), {
   ssr: false,
 });
 
-const PolarAreaChart = () => {
+interface IPolarAreaChart {
+  isLoading: boolean;
+  seriesData: TSeries;
+}
+
+const PolarAreaChart = ({ isLoading, seriesData }: IPolarAreaChart) => {
   const [state, setState] = React.useState({
-    series: [14, 23, 21, 17],
+    series: [],
     options: {
       chart: {
         type: "polarArea",
       },
       stroke: {
-        colors: ["#fff"],
+        colors: ["#FDFDFD"],
       },
       fill: {
         opacity: 0.8,
@@ -22,7 +29,8 @@ const PolarAreaChart = () => {
           breakpoint: 480,
           options: {
             chart: {
-              width: 200,
+              width: 250,
+              height: 350,
             },
             legend: {
               position: "bottom",
@@ -34,12 +42,14 @@ const PolarAreaChart = () => {
   });
 
   return (
-    <ApexChart
-      options={state.options}
-      series={state.series}
-      type="polarArea"
-      height={300}
-    />
+    <Skeleton isLoaded={!isLoading} className="min-h-80 rounded-lg">
+      <ApexChart
+        options={state.options}
+        series={seriesData}
+        type="polarArea"
+        height={300}
+      />
+    </Skeleton>
   );
 };
 

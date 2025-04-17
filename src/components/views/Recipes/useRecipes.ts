@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const Recipes = () => {
+const useRecipes = () => {
   const router = useRouter();
 
   const [selectedId, setSelectedId] = useState<string>("");
@@ -49,4 +49,4 @@ const Recipes = () => {
   };
 };
 
-export default Recipes;
+export default useRecipes;

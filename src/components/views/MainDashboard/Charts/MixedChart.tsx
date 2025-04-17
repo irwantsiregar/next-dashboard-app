@@ -1,101 +1,137 @@
-import React from "react";
+import { TSeries } from "@/types/Charts";
+import { Skeleton } from "@heroui/react";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 const ApexChart = dynamic(() => import("@/components/ui/Charts/ApexChart"), {
   ssr: false,
 });
 
-const MixedChart = () => {
-  const [state, setState] = React.useState({
-    series: [
-      {
-        name: "TEAM A",
-        type: "column",
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-      },
-      {
-        name: "TEAM B",
-        type: "area",
-        data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-      },
-      {
-        name: "TEAM C",
-        type: "line",
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-      },
-    ],
+interface IMixedChart {
+  isLoading: boolean;
+  seriesData: TSeries;
+}
+
+const MixedChart = ({ isLoading, seriesData }: IMixedChart) => {
+  const [state, setState] = useState({
+    series: [],
+    noData: {
+      text: "Loading...",
+    },
     options: {
+      markers: {
+        size: 4,
+        colors: "#EE4148",
+        strokeColors: "#EE4148",
+        shape: "circle",
+      },
       chart: {
         height: 350,
-        type: "line",
+        type: "bar",
         stacked: false,
       },
-      stroke: {
-        width: [0, 2, 5],
-        curve: "smooth",
-      },
+      colors: ["#4472C4", "#ED7D31", "#deeafe"],
       plotOptions: {
         bar: {
-          columnWidth: "50%",
-        },
-      },
-
-      fill: {
-        opacity: [0.85, 0.25, 1],
-        gradient: {
-          inverseColors: false,
-          shade: "light",
-          type: "vertical",
-          opacityFrom: 0.85,
-          opacityTo: 0.55,
-          stops: [0, 100, 100, 100],
-        },
-      },
-      labels: [
-        "01/01/2003",
-        "02/01/2003",
-        "03/01/2003",
-        "04/01/2003",
-        "05/01/2003",
-        "06/01/2003",
-        "07/01/2003",
-        "08/01/2003",
-        "09/01/2003",
-        "10/01/2003",
-        "11/01/2003",
-      ],
-      markers: {
-        size: 0,
-      },
-      xaxis: {
-        type: "datetime",
-      },
-      yaxis: {
-        title: {
-          text: "Points",
-        },
-      },
-      tooltip: {
-        shared: true,
-        intersect: false,
-        y: {
-          formatter: function (y: any) {
-            if (typeof y !== "undefined") {
-              return y.toFixed(0) + " points";
-            }
-            return y;
+          borderRadius: 2,
+          dataLabels: {
+            position: "top",
           },
         },
+      },
+      dataLabels: {
+        enabled: true,
+        offsetY: -18,
+        offsetX: 0,
+        formatter: (val: number, { seriesIndex, w }: any) => {
+          if (seriesIndex === 2) {
+            w.config.dataLabels.offsetY = -10;
+          }
+          return seriesIndex !== 2 ? val : val > 0 ? `${val}%` : val;
+        },
+        style: {
+          colors: ["#1F1F1F"],
+        },
+      },
+      stroke: {
+        width: [1, 1, 4],
+      },
+      xaxis: {
+        tickPlacement: "on",
+        categories: [],
+      },
+      yaxis: [
+        {
+          seriesName: "Products",
+          labels: {
+            show: false,
+          },
+          tooltip: {
+            enabled: true,
+          },
+        },
+
+        {
+          seriesName: "Carts",
+          labels: {
+            show: false,
+          },
+          tooltip: {
+            enabled: false,
+          },
+        },
+
+        {
+          seriesName: "Posts",
+          max: 100,
+          min: 0,
+          labels: {
+            show: false,
+          },
+          tooltip: {
+            enabled: false,
+          },
+        },
+      ],
+      tooltip: {
+        fixed: {
+          enabled: false,
+          position: "topRight",
+          offsetY: 30,
+          offsetX: 110,
+        },
+        enabled: true,
+        shared: false,
+        intersect: false,
+        theme: "dark",
+        style: {
+          fontSize: "9px",
+        },
+        onDatasetHover: {
+          highlightDataSeries: true,
+        },
+        y: {
+          formatter: (val: number, { seriesIndex }: any) =>
+            seriesIndex !== 2 ? val : `${val}%`,
+        },
+      },
+      legend: {
+        horizontalAlign: "left",
+        offsetX: 0,
+        offsetY: 10,
       },
     },
   });
 
   return (
-    <ApexChart
-      options={state.options}
-      series={state.series}
-      type="line"
-      height={350}
-    />
+    <Skeleton isLoaded={!isLoading} className="min-h-80 rounded-lg">
+      <ApexChart
+        options={state.options}
+        series={seriesData}
+        type="line"
+        height={350}
+        className="overflow-x-auto overflow-y-hidden"
+      />
+    </Skeleton>
   );
 };
 

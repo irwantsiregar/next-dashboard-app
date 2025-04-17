@@ -28,9 +28,11 @@ function DashboardLayoutSidebar(props: PropTypes) {
   return (
     <div
       className={cn(
-        "fixed z-50 flex h-screen w-full max-w-[300px] -translate-x-full flex-col justify-between border-r-1 border-default-200 px-4 py-6 transition-all lg:relative lg:translate-x-0",
+        "fixed z-50 flex h-screen w-full max-w-[300px] -translate-x-full flex-col justify-between border border-r-1 border-default-200 px-4 py-6 transition-all lg:relative lg:translate-x-0",
         {
           "translate-x-0": isOpen,
+          "lg:fixed": isOpen,
+          "lg:-translate-x-full": isOpen,
           "bg-white": theme === "light",
           "bg-black": theme === "dark",
         },

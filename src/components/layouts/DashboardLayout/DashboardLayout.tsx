@@ -1,7 +1,8 @@
 import PageHead from "@/components/commons/PageHead";
-import TopBar from "@/components/commons/TopBar";
-import { Navbar, NavbarMenuToggle } from "@heroui/react";
-import { Fragment, ReactNode, useState } from "react";
+import TopNavBar from "@/components/commons/TopNavBar";
+import useToggleMenu from "@/hooks/useToggleMenu";
+import { NavbarMenuToggle } from "@heroui/react";
+import { Fragment, ReactNode } from "react";
 import { SIDEBAR_ADMIN } from "./DashboardLayout.constants";
 import DashboardLayoutSidebar from "./DashboardLayoutSidebar";
 
@@ -15,7 +16,7 @@ interface PropTypes {
 const DashboardLayout = (props: PropTypes) => {
   const { children, description, title, type = "admin" } = props;
 
-  const [open, setOpen] = useState(false);
+  const { open, onToggle } = useToggleMenu();
 
   return (
     <Fragment>
@@ -28,25 +29,24 @@ const DashboardLayout = (props: PropTypes) => {
         />
 
         <div className="h-screen w-full overflow-auto">
-          <TopBar />
+          <TopNavBar>
+            <NavbarMenuToggle
+              aria-label={open ? "Close menu" : "Open menu"}
+              onPress={onToggle}
+            />
+          </TopNavBar>
 
-          <div className="relative px-6 py-2">
-            <Navbar
-              className="flex justify-between bg-transparent px-0"
-              isBlurred={false}
-              classNames={{ wrapper: "p-0" }}
-              position="static"
-            >
+          <div
+            className="relative px-6 py-2"
+            onClick={() => {
+              if (open) onToggle();
+            }}
+          >
+            <div className="flex w-full flex-col gap-y-2 pt-2">
               <h1 className="text-3xl font-bold">{title}</h1>
 
-              <NavbarMenuToggle
-                className="lg:hidden"
-                aria-label={open ? "Close menu" : "Open menu"}
-                onPress={() => setOpen(!open)}
-              />
-            </Navbar>
-
-            <p className="mb-4 text-small">{description}</p>
+              <p className="mb-4 text-small">{description}</p>
+            </div>
 
             {children}
           </div>
